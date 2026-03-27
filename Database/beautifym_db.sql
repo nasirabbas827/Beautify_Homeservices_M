@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 07, 2026 at 10:05 AM
+-- Generation Time: Mar 27, 2026 at 07:21 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -64,7 +64,9 @@ CREATE TABLE `appointments` (
 --
 
 INSERT INTO `appointments` (`id`, `client_id`, `appointment_date`, `appointment_time`, `service_address`, `contact_number`, `status`, `total_amount`, `created_at`, `updated_at`) VALUES
-(1, 1, '2026-02-13', '15:31:00', 'ds', 'ewrasfd', 'completed', 1500.00, '2026-02-07 08:31:33', '2026-02-07 08:33:42');
+(1, 1, '2026-02-13', '15:31:00', 'ds', 'ewrasfd', 'cancelled', 1500.00, '2026-02-07 08:31:33', '2026-02-07 12:05:51'),
+(2, 1, '2026-02-07', '17:05:00', 'dsaf', 's', 'completed', 1800.00, '2026-02-07 12:05:41', '2026-02-07 12:20:26'),
+(3, 1, '2026-02-07', '17:06:00', 'cxz', 'rew', 'completed', 1000.00, '2026-02-07 12:06:36', '2026-02-07 12:20:29');
 
 -- --------------------------------------------------------
 
@@ -84,7 +86,48 @@ CREATE TABLE `appointment_services` (
 --
 
 INSERT INTO `appointment_services` (`id`, `appointment_id`, `service_id`, `price`) VALUES
-(1, 1, 1, 1500.00);
+(1, 1, 1, 1500.00),
+(2, 2, 3, 1800.00),
+(3, 3, 6, 1000.00);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `faqs`
+--
+
+CREATE TABLE `faqs` (
+  `faq_id` int(11) NOT NULL,
+  `question` varchar(255) NOT NULL,
+  `answer` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `faqs`
+--
+
+INSERT INTO `faqs` (`faq_id`, `question`, `answer`, `created_at`) VALUES
+(2, 'What services do you offer at Beautify?', 'We offer skin care, hair care, facials, massages, nail art, makeup services, and more.', '2026-03-27 06:15:27'),
+(3, 'Do I need an appointment?', 'Yes, we recommend booking an appointment in advance to ensure availability.', '2026-03-27 06:15:27'),
+(4, 'What are your working hours?', 'Our salon is open Monday to Saturday, from 10:00 AM to 8:00 PM.', '2026-03-27 06:15:27'),
+(5, 'Do you provide home service?', 'Currently, we provide all services at our salon location. Home service is not available.', '2026-03-27 06:15:27'),
+(6, 'Are your products safe for sensitive skin?', 'Yes, we use dermatologist-approved products suitable for most skin types.', '2026-03-27 06:15:27'),
+(7, 'How can I book an appointment?', 'You can book online through our website or call our salon directly.', '2026-03-27 06:15:27'),
+(8, 'Do you offer bridal makeup packages?', 'Yes, we have customized bridal packages including makeup, hair, and skin prep.', '2026-03-27 06:15:27'),
+(9, 'What is your cancellation policy?', 'Cancellations must be made at least 24 hours in advance to avoid charges.', '2026-03-27 06:15:27'),
+(10, 'Can I change my appointment date?', 'Yes, please contact us at least 24 hours before your scheduled appointment.', '2026-03-27 06:15:27'),
+(11, 'Do you offer gift vouchers?', 'Yes, gift vouchers are available for all services and can be purchased in salon or online.', '2026-03-27 06:15:27'),
+(12, 'Are your stylists certified?', 'Yes, all our staff are professionally trained and certified in their respective fields.', '2026-03-27 06:15:27'),
+(13, 'Do you provide consultations before treatments?', 'Yes, we provide personalized consultations to choose the best treatments for you.', '2026-03-27 06:15:27'),
+(14, 'How long does a facial take?', 'A typical facial takes about 60 minutes, depending on the type of treatment.', '2026-03-27 06:15:27'),
+(15, 'Can I request a male or female therapist?', 'Yes, you can specify your preference when booking your appointment.', '2026-03-27 06:15:27'),
+(16, 'Do you have parking facilities?', 'Yes, we provide free parking space for our clients near the salon.', '2026-03-27 06:15:27'),
+(17, 'Is makeup removal included in your services?', 'Yes, all facial and makeup services include proper cleansing and removal steps.', '2026-03-27 06:15:27'),
+(18, 'What are your hygiene standards?', 'We follow strict hygiene protocols, including sterilization of tools and clean service areas.', '2026-03-27 06:15:27'),
+(19, 'Do you offer discounts or membership plans?', 'Yes, we have seasonal discounts and membership packages for regular clients.', '2026-03-27 06:15:27'),
+(20, 'Can I combine services in one appointment?', 'Yes, you can customize your appointment with multiple services in one visit.', '2026-03-27 06:15:27'),
+(21, 'Do you offer consultations for skin problems?', 'Yes, our experts provide guidance and recommend suitable treatments for skin concerns.', '2026-03-27 06:15:27');
 
 -- --------------------------------------------------------
 
@@ -210,6 +253,46 @@ INSERT INTO `service_subcategories` (`id`, `category_id`, `name`, `description`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `stories`
+--
+
+CREATE TABLE `stories` (
+  `story_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `content` text DEFAULT NULL,
+  `image_url` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `stories`
+--
+
+INSERT INTO `stories` (`story_id`, `title`, `content`, `image_url`, `created_at`) VALUES
+(4, 'Luxury Skin Care Tips', 'Discover the best practices for glowing skin using luxury skincare treatments.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(5, 'Hair Spa Secrets', 'Learn how hair spa treatments can rejuvenate your hair and scalp.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(6, 'Facial Treatments Guide', 'A comprehensive guide to facials for different skin types.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(7, 'Nail Art Trends 2026', 'Top nail art designs and trends for this year.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(8, 'Makeup Tips for Everyday', 'Essential makeup techniques for a natural everyday look.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(9, 'Body Massage Benefits', 'Relax and rejuvenate with the most effective body massages.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(10, 'Anti-Aging Skincare', 'Best anti-aging treatments to maintain youthful skin.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(11, 'Bridal Makeup Essentials', 'Everything a bride needs to look perfect on her big day.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(12, 'Hair Coloring Techniques', 'Explore popular hair coloring techniques and styles.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(13, 'Deep Cleansing Facial', 'Step-by-step guide to achieving a deep cleansing facial.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(14, 'Eyebrow Shaping Tips', 'Perfect your eyebrow shape for a polished look.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(15, 'Detox Body Treatments', 'How detox treatments help refresh your body and mind.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(16, 'Brilliant Manicure Ideas', 'Creative manicure ideas to elevate your nail style.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(17, 'Facial Masks at Home', 'DIY facial masks for glowing skin in the comfort of your home.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(18, 'Spa Etiquette Tips', 'Important tips to follow during spa visits.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(19, 'Hair Care Routine', 'Daily and weekly hair care routines for healthy hair.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(20, 'Makeup for Parties', 'Glamorous makeup looks perfect for parties and events.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(21, 'Foot Massage Techniques', 'Effective foot massage techniques for relaxation.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(22, 'Skincare for Summer', 'Protect your skin and keep it fresh during summer.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03'),
+(23, 'Nighttime Beauty Routine', 'Step-by-step nighttime beauty routine for better skin.', 'uploads/1774591620_b2.jpeg', '2026-03-27 06:08:03');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -233,7 +316,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `full_name`, `username`, `email`, `password`, `dob`, `cnic`, `contact_number`, `address`, `is_active`, `created_at`, `updated_at`) VALUES
-(1, 'NASIR ABBAS', 'nasir12', 'nasiryt.827@gmail.com', '$2y$10$TiWF92C/55jAOb09ZLNyguws4aER61jeytMmHZecEmm1iR1Q41DXS', '2026-02-07', '3240254008217', '03176526827', 'Street jeff xxxx\r\nAp04', 1, '2026-02-07 07:48:15', '2026-02-07 07:48:15');
+(1, 'NASIR ABBAS', 'nasir12', 'nasiryt.827@gmail.com', '$2y$10$TiWF92C/55jAOb09ZLNyguws4aER61jeytMmHZecEmm1iR1Q41DXS', '2026-02-07', '3240254008217', '03176526827', 'Street jeff xxxx\r\nAp04', 1, '2026-02-07 07:48:15', '2026-02-07 07:48:15'),
+(2, 'Client One', 'Client12', 'client12@gmail.com', '$2y$10$5LcYl6zbbJz1bNJ9qqdGd.GaPljIiW4/pxhSdEANtV/xaTgI8SR4W', '2026-02-23', '3240284436385', '03266029022', 'XYZ', 1, '2026-02-23 16:13:45', '2026-02-23 16:13:45');
 
 --
 -- Indexes for dumped tables
@@ -261,6 +345,12 @@ ALTER TABLE `appointment_services`
   ADD KEY `service_id` (`service_id`);
 
 --
+-- Indexes for table `faqs`
+--
+ALTER TABLE `faqs`
+  ADD PRIMARY KEY (`faq_id`);
+
+--
 -- Indexes for table `services`
 --
 ALTER TABLE `services`
@@ -280,6 +370,12 @@ ALTER TABLE `service_categories`
 ALTER TABLE `service_subcategories`
   ADD PRIMARY KEY (`id`),
   ADD KEY `category_id` (`category_id`);
+
+--
+-- Indexes for table `stories`
+--
+ALTER TABLE `stories`
+  ADD PRIMARY KEY (`story_id`);
 
 --
 -- Indexes for table `users`
@@ -303,13 +399,19 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `appointments`
 --
 ALTER TABLE `appointments`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `appointment_services`
 --
 ALTER TABLE `appointment_services`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `faqs`
+--
+ALTER TABLE `faqs`
+  MODIFY `faq_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -330,10 +432,16 @@ ALTER TABLE `service_subcategories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
+-- AUTO_INCREMENT for table `stories`
+--
+ALTER TABLE `stories`
+  MODIFY `story_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

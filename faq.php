@@ -1,5 +1,10 @@
 <?php
 session_start();
+require_once('config.php');
+
+// Fetch all FAQs from the database
+$query = "SELECT * FROM faqs ORDER BY created_at DESC";
+$result = $conn->query($query);
 ?>
 
 <!DOCTYPE html>
@@ -9,9 +14,6 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Frequently Asked Questions | Beautify</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./CSS/style.css">
@@ -63,25 +65,12 @@ session_start();
             box-shadow: none;
         }
 
-        .accordion-button::after {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23d4a373'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-        }
-
-        .category-title {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary-gold);
-            margin-bottom: 25px;
-            margin-top: 40px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .category-title::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: rgba(212, 163, 115, 0.3);
+        .search-box {
+            border-radius: 50px;
+            padding: 15px 25px;
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
 
         .help-card {
@@ -118,91 +107,45 @@ session_start();
     <header class="faq-header">
         <div class="container">
             <h1>Common Inquiries</h1>
-            <p class="lead opacity-75">Everything you need to know about our luxury home services.</p>
+            <p class="lead opacity-75">Find quick answers to your questions about our services.</p>
         </div>
     </header>
 
     <div class="container py-5">
         <div class="row justify-content-center">
-            <div class="col-lg-9">
+            <div class="col-lg-8">
                 
-                <h3 class="category-title"><i class="fas fa-calendar-check"></i> Booking & Scheduling</h3>
-                <div class="accordion" id="bookingFaq">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#q1">
-                                How do I book a home service?
-                            </button>
-                        </h2>
-                        <div id="q1" class="accordion-collapse collapse show" data-bs-parent="#bookingFaq">
-                            <div class="accordion-body text-muted">
-                                Simply browse our <strong>Services</strong> page, select the treatment you want, and click "Book". You'll be asked to pick a date and time that suits you. Our system will then confirm the appointment.
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q2">
-                                Can I cancel or reschedule my appointment?
-                            </button>
-                        </h2>
-                        <div id="q2" class="accordion-collapse collapse" data-bs-parent="#bookingFaq">
-                            <div class="accordion-body text-muted">
-                                Yes! You can manage your bookings through your <strong>Dashboard</strong>. We kindly ask for at least 24 hours' notice for cancellations to respect our professionals' time.
-                            </div>
-                        </div>
-                    </div>
+                <div class="position-relative">
+                    <input type="text" id="faqSearch" class="form-control search-box" placeholder="Search for a question (e.g. 'booking', 'price')...">
                 </div>
 
-                <h3 class="category-title"><i class="fas fa-shield-alt"></i> Safety & Hygiene</h3>
-                <div class="accordion" id="safetyFaq">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q3">
-                                What hygiene protocols do you follow?
-                            </button>
-                        </h2>
-                        <div id="q3" class="accordion-collapse collapse" data-bs-parent="#safetyFaq">
-                            <div class="accordion-body text-muted">
-                                Your safety is our priority. Our professionals use sanitized tools, wear masks/gloves when necessary, and carry disposable kits for services like wax and facials to ensure 100% hygiene.
+                <div class="accordion" id="dynamicFaq">
+                    <?php if ($result && $result->num_rows > 0): ?>
+                        <?php $count = 0; while($row = $result->fetch_assoc()): $count++; ?>
+                            <div class="accordion-item faq-row">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button <?php echo ($count > 1) ? 'collapsed' : ''; ?>" type="button" data-bs-toggle="collapse" data-bs-target="#faq-<?php echo $row['faq_id']; ?>">
+                                        <?php echo htmlspecialchars($row['question']); ?>
+                                    </button>
+                                </h2>
+                                <div id="faq-<?php echo $row['faq_id']; ?>" class="accordion-collapse collapse <?php echo ($count == 1) ? 'show' : ''; ?>" data-bs-parent="#dynamicFaq">
+                                    <div class="accordion-body text-muted">
+                                        <?php echo nl2br(htmlspecialchars($row['answer'])); ?>
+                                    </div>
+                                </div>
                             </div>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <div class="text-center py-5">
+                            <i class="fas fa-question-circle fa-3x mb-3 text-muted"></i>
+                            <p class="text-muted">No questions found. Check back soon!</p>
                         </div>
-                    </div>
-
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q4">
-                                Are your professionals background-checked?
-                            </button>
-                        </h2>
-                        <div id="q4" class="accordion-collapse collapse" data-bs-parent="#safetyFaq">
-                            <div class="accordion-body text-muted">
-                                Absolutely. Every beautician and stylist undergoes a rigorous background check and a skill verification process before joining the Beautify team.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <h3 class="category-title"><i class="fas fa-wallet"></i> Payments & Pricing</h3>
-                <div class="accordion" id="paymentFaq">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q5">
-                                What are the available payment methods?
-                            </button>
-                        </h2>
-                        <div id="q5" class="accordion-collapse collapse" data-bs-parent="#paymentFaq">
-                            <div class="accordion-body text-muted">
-                                We currently support Cash on Service (CoS). Once your service is completed to your satisfaction, you can pay our professional directly. Online payment options are coming soon!
-                            </div>
-                        </div>
-                    </div>
+                    <?php endif; ?>
                 </div>
 
                 <div class="help-card shadow-lg">
                     <h2 class="mb-3" style="font-family: 'Playfair Display';">Still have questions?</h2>
-                    <p class="mb-4 opacity-75">Our support team is available from 9 AM to 9 PM to help you with anything you need.</p>
+                    <p class="mb-4 opacity-75">Our support team is available from 9 AM to 9 PM.</p>
                     <div class="d-flex flex-wrap justify-content-center gap-3">
                         <a href="contact.php" class="btn-gold">Contact Us</a>
                         <a href="https://wa.me/yournumber" class="btn btn-outline-light rounded-pill px-4 py-2"><i class="fab fa-whatsapp me-2"></i> WhatsApp Support</a>
@@ -220,5 +163,17 @@ session_start();
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.getElementById('faqSearch').addEventListener('keyup', function() {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll('.faq-row');
+            
+            rows.forEach(row => {
+                let text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? '' : 'none';
+            });
+        });
+    </script>
 </body>
 </html>

@@ -18,7 +18,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 
                 <li class="nav-item px-1">
                     <a class="nav-link <?= ($current_page == 'admin_dashboard.php') ? 'active text-warning' : '' ?>" href="admin_dashboard.php">
-                        Dashboard
+                        Home
                     </a>
                 </li>
 
@@ -30,7 +30,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
                 <li class="nav-item px-1">
                     <a class="nav-link <?= ($current_page == 'view_subcategories.php') ? 'active text-warning' : '' ?>" href="view_subcategories.php">
-                        Sub-Categories
+                        Sub-Cats
                     </a>
                 </li>
 
@@ -49,6 +49,16 @@ $current_page = basename($_SERVER['PHP_SELF']);
                 <li class="nav-item px-1">
                     <a class="nav-link <?= ($current_page == 'view_users.php') ? 'active text-warning' : '' ?>" href="view_users.php">
                         Clients
+                    </a>
+                </li>
+                <li class="nav-item px-1">
+                    <a class="nav-link <?= ($current_page == 'view_stories.php') ? 'active text-warning' : '' ?>" href="view_stories.php">
+                        Stories
+                    </a>
+                </li>
+                <li class="nav-item px-1">
+                    <a class="nav-link <?= ($current_page == 'view_faqs.php') ? 'active text-warning' : '' ?>" href="view_faqs.php">
+                        FAQs
                     </a>
                 </li>
 
@@ -73,4 +83,4 @@ $current_page = basename($_SERVER['PHP_SELF']);
     .navbar-dark .navbar-nav .nav-link.active {
         border-bottom: 2px solid #d4a373;
     }
-</style>
+</style>  

@@ -1,6 +1,13 @@
 <?php
 session_start();
-// No DB connection needed for a static page
+require_once('config.php');
+
+// Fetch all stories from your table, newest first
+$query = "SELECT * FROM stories ORDER BY created_at DESC";
+$result = $conn->query($query);
+
+// Separate the first story to be the "Featured" one
+$featured = $result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -12,120 +19,22 @@ session_start();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./CSS/style.css">
     <style>
-        :root {
-            --primary-gold: #d4a373;
-            --dark-charcoal: #2d2d2d;
-            --bg-silk: #fdfcfb;
+        :root { --primary-gold: #d4a373; --dark-charcoal: #2d2d2d; --bg-silk: #fdfcfb; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-silk); color: var(--dark-charcoal); }
+        .stories-header { 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1560750588-73207b1ef5b8?auto=format&fit=crop&w=1350&q=80');
+            background-size: cover; background-position: center; padding: 120px 0; color: white; text-align: center; margin-bottom: 80px; 
         }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-silk);
-            color: var(--dark-charcoal);
-        }
-
-        /* Hero Header */
-        .stories-header {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1560750588-73207b1ef5b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
-            background-size: cover;
-            background-position: center;
-            padding: 120px 0;
-            color: white;
-            text-align: center;
-            margin-bottom: 80px;
-        }
-
-        .stories-header h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-        }
-
-        /* Featured Story Card */
-        .featured-card {
-            background: white;
-            border-radius: 25px;
-            overflow: hidden;
-            border: none;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.08);
-            margin-top: -150px;
-            position: relative;
-            z-index: 5;
-        }
-
-        .featured-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            min-height: 450px;
-        }
-
-        /* Review Cards */
-        .story-card {
-            background: white;
-            border: none;
-            border-radius: 20px;
-            padding: 30px;
-            height: 100%;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-
-        .story-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 35px rgba(212, 163, 115, 0.2);
-        }
-
-        .quote-mark {
-            font-size: 2.5rem;
-            color: var(--primary-gold);
-            opacity: 0.2;
-            line-height: 1;
-        }
-
-        .star-rating {
-            color: #ffc107;
-            font-size: 0.85rem;
-            margin-bottom: 15px;
-        }
-
-        .client-info img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 15px;
-            border: 2px solid var(--primary-gold);
-        }
-
-        .cta-section {
-            background-color: var(--dark-charcoal);
-            color: white;
-            padding: 80px 0;
-            margin-top: 80px;
-        }
-
-        .btn-gold {
-            background-color: var(--primary-gold);
-            color: white;
-            padding: 15px 40px;
-            border-radius: 50px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: 0.3s;
-        }
-
-        .btn-gold:hover {
-            background-color: #bc8a5f;
-            color: white;
-            transform: scale(1.05);
-        }
+        .stories-header h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; }
+        .featured-card { background: white; border-radius: 25px; overflow: hidden; border: none; box-shadow: 0 30px 60px rgba(0,0,0,0.08); margin-top: -150px; position: relative; z-index: 5; }
+        .featured-img { width: 100%; height: 100%; object-fit: cover; min-height: 450px; }
+        .story-card { background: white; border: none; border-radius: 20px; padding: 30px; height: 100%; transition: all 0.3s ease; border: 1px solid rgba(0,0,0,0.03); }
+        .story-card:hover { transform: translateY(-10px); box-shadow: 0 15px 35px rgba(212, 163, 115, 0.2); }
+        .quote-mark { font-size: 2.5rem; color: var(--primary-gold); opacity: 0.2; line-height: 1; }
+        .cta-section { background-color: var(--dark-charcoal); color: white; padding: 80px 0; margin-top: 80px; }
+        .btn-gold { background-color: var(--primary-gold); color: white; padding: 15px 40px; border-radius: 50px; font-weight: 600; text-transform: uppercase; transition: 0.3s; text-decoration: none; display: inline-block; }
     </style>
 </head>
 <body>
@@ -140,95 +49,64 @@ session_start();
     </header>
 
     <div class="container">
+        <?php if ($featured): ?>
         <div class="card featured-card mb-5">
             <div class="row g-0">
                 <div class="col-md-6">
-                    <img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1351&q=80" class="featured-img" alt="Featured transformation">
+                    <img src="admin/<?php echo htmlspecialchars($featured['image_url']); ?>" class="featured-img" alt="Featured Story">
                 </div>
                 <div class="col-md-6 d-flex align-items-center">
                     <div class="card-body p-5">
-                        <span class="badge bg-light text-primary mb-3 px-3 py-2 rounded-pill">Featured Transformation</span>
-                        <h2 class="display-6 fw-bold mb-4" style="font-family: 'Playfair Display';">The Bridal Glow Experience</h2>
+                        <span class="badge bg-light text-primary mb-3 px-3 py-2 rounded-pill">Latest Transformation</span>
+                        <h2 class="display-6 fw-bold mb-4" style="font-family: 'Playfair Display';"><?php echo htmlspecialchars($featured['title']); ?></h2>
                         <p class="text-muted fs-5 lh-lg mb-4">
-                            "I was skeptical about home services for my wedding events, but Beautify exceeded every expectation. The team was punctual, used high-end products, and understood exactly the look I wanted. It felt like having a premium salon inside my own bedroom."
+                            "<?php echo nl2br(htmlspecialchars($featured['content'])); ?>"
                         </p>
-                        <div class="client-info d-flex align-items-center">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Zoya K.">
-                            <div>
-                                <h6 class="mb-0 fw-bold">Zoya Khan</h6>
-                                <small class="text-muted">Bridal Package · Lahore</small>
-                            </div>
-                        </div>
+                        <small class="text-muted">Published on: <?php echo date('M d, Y', strtotime($featured['created_at'])); ?></small>
                     </div>
                 </div>
             </div>
         </div>
+        <?php endif; ?>
 
         <div class="row g-4 mt-4">
+            <?php while($row = $result->fetch_assoc()): ?>
             <div class="col-md-4">
                 <div class="card story-card">
-                    <div class="star-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
                     <i class="fas fa-quote-left quote-mark"></i>
-                    <p class="text-muted italic mb-4">"The Men's Grooming package is a lifesaver for busy professionals. A barber who actually listens and takes his time, all while I'm in my home office."</p>
-                    <div class="client-info d-flex align-items-center">
-                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Ahmed">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Ahmed Ali</h6>
-                            <small class="text-muted">Executive Haircut</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                    <h5 class="fw-bold mb-3"><?php echo htmlspecialchars($row['title']); ?></h5>
+                    <p class="text-muted mb-4">"<?php echo htmlspecialchars(substr($row['content'], 0, 150)) . '...'; ?>"</p>
+                    
+                    <?php if($row['image_url']): ?>
+                        <img src="admin/<?php echo htmlspecialchars($row['image_url']); ?>" class="img-fluid rounded mb-3" style="height: 150px; width: 100%; object-fit: cover;">
+                    <?php endif; ?>
 
-            <div class="col-md-4">
-                <div class="card story-card">
-                    <div class="star-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
-                    </div>
-                    <i class="fas fa-quote-left quote-mark"></i>
-                    <p class="text-muted italic mb-4">"Best facial I've ever had! The therapist brought her own specialized equipment and even played soothing music. Totally transformed my mood."</p>
-                    <div class="client-info d-flex align-items-center">
-                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Sana">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Sana Mansoor</h6>
-                            <small class="text-muted">Hydra-Facial Luxe</small>
-                        </div>
+                    <div class="mt-auto">
+                        <small class="text-muted d-block">Verified Client Story</small>
+                        <small class="text-muted"><?php echo date('M Y', strtotime($row['created_at'])); ?></small>
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-4">
-                <div class="card story-card">
-                    <div class="star-rating">
-                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
-                    </div>
-                    <i class="fas fa-quote-left quote-mark"></i>
-                    <p class="text-muted italic mb-4">"The convenience is 10/10. No traffic, no waiting in salons. The nail artist was a perfectionist. My manicures lasted for weeks!"</p>
-                    <div class="client-info d-flex align-items-center">
-                        <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Maria">
-                        <div>
-                            <h6 class="mb-0 fw-bold">Maria J.</h6>
-                            <small class="text-muted">Spa Mani-Pedi</small>
-                        </div>
-                    </div>
+            <?php endwhile; ?>
+            
+            <?php if ($result->num_rows == 0 && !$featured): ?>
+                <div class="col-12 text-center py-5">
+                    <p class="text-muted">No stories found. Be the first to share your experience!</p>
                 </div>
-            </div>
+            <?php endif; ?>
         </div>
     </div>
 
     <section class="cta-section text-center">
         <div class="container">
             <h2 class="display-5 fw-bold mb-4" style="font-family: 'Playfair Display';">Ready for your own glow-up?</h2>
-            <p class="lead mb-5 opacity-75">Join thousands of happy clients who trust Beautify for their grooming needs.</p>
             <a href="search_services.php" class="btn btn-gold shadow-lg">Book a Service Now</a>
         </div>
     </section>
 
     <footer class="py-4 text-center border-top bg-white">
         <div class="container">
-            <p class="mb-0 text-muted">&copy; <?php echo date("Y"); ?> BEAUTIFY. All stories are verified by our team.</p>
+            <p class="mb-0 text-muted">&copy; <?php echo date("Y"); ?> BEAUTIFY. All stories are verified.</p>
         </div>
     </footer>
 

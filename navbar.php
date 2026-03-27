@@ -15,6 +15,7 @@
                 <li class="nav-item"><a class="nav-link px-3 fw-medium" href="stories.php">Stories</a></li>
                 <li class="nav-item"><a class="nav-link px-3 fw-medium" href="faq.php">FAQ</a></li>
                 <li class="nav-item"><a class="nav-link px-3 fw-medium" href="contact.php">Contact Us</a></li>
+                <li class="nav-item"><a class="nav-link px-3 fw-medium" href="about_us.php">About Us</a></li>
                 
                 <?php if (isset($_SESSION["id"])): ?>
                     <li class="nav-item ms-lg-3">
